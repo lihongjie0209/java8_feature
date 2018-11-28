@@ -29,11 +29,11 @@ public class ConsumerTest {
 
 		Consumer<String> stringConsumer = new Consumer<String>() {
 			@Override
-			public void cosume(String o) {
+			public void consume(String o) {
 				logger.info(o);
 			}
 		};
-		stringConsumer.cosume("hello world");
+		stringConsumer.consume("hello world");
 
 	}
 
@@ -42,7 +42,7 @@ public class ConsumerTest {
 
 
 		Consumer<String> stringConsumer = o -> logger.info(o);
-		stringConsumer.cosume("hello world");
+		stringConsumer.consume("hello world");
 
 	}
 
@@ -51,12 +51,25 @@ public class ConsumerTest {
 
 
 		Consumer<String> stringConsumer = logger::info;
-		stringConsumer.cosume("hello world");
+		stringConsumer.consume("hello world");
 
 	}
 
 
+	@Test
+	public void testConsumerCompose() throws Exception {
+
+		Consumer<String> first = logger::info;
+		Consumer<String> second = logger::info;
+
+		Consumer<String> composed = first.then(second);
+
+		composed.consume("hello, world");
 
 
 
+
+
+
+	}
 }

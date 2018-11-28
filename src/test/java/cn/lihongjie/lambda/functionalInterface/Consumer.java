@@ -7,11 +7,14 @@ package cn.lihongjie.lambda.functionalInterface;
 public interface Consumer<T> {
 
 
-	void cosume(T o);
+	void consume(T o);
 
 
+	default Consumer<T> then(Consumer<T> second) {
 
-
-
-
+		return o -> {
+			this.consume(o);
+			second.consume(o);
+		};
+	}
 }
