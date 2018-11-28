@@ -1,4 +1,4 @@
-package cn.lihongjie.lambda.functionalInterface;
+package cn.lihongjie.lambda.functionalInterface.consumer;
 
 /**
  * @author 982264618@qq.com

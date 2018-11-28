@@ -1,4 +1,4 @@
-package cn.lihongjie.lambda.functionalInterface;
+package cn.lihongjie.lambda.functionalInterface.consumer;
 
 import org.junit.After;
 import org.junit.Before;
