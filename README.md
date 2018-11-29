@@ -6,6 +6,8 @@
 
 1. 函数式
 2. Stream
+3. Parallel
+4. Asynchronous
 
 
 # 备注
