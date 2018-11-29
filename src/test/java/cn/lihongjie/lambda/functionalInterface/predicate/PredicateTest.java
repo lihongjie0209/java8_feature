@@ -71,4 +71,40 @@ public class PredicateTest {
 		Assert.assertTrue(notEmpty.test("aa"));
 
 	}
+
+	@Test
+	public void testAnd() throws Exception {
+
+		Predicate<String> noemptyTest = toTest -> ! toTest.isEmpty();
+		Predicate<String> startWithATest = toTest -> toTest.startsWith("a");
+
+		Predicate<String> composedTest = noemptyTest.and(startWithATest);
+
+
+		Assert.assertTrue(composedTest.test("a"));
+		Assert.assertFalse(composedTest.test("v"));
+		Assert.assertFalse(composedTest.test(""));
+
+	}
+
+
+	@Test
+	public void testXOR() throws Exception {
+
+		Predicate<String> startWithATest = toTest -> toTest.startsWith("a");
+		Predicate<String> lengthTest = toTest -> toTest.length() == 3;
+
+		Predicate<String> composedTest = startWithATest.xor(lengthTest);
+
+		Assert.assertTrue(composedTest.test("a"));
+		Assert.assertFalse(composedTest.test("aaa"));
+		Assert.assertFalse(composedTest.test("b"));
+		Assert.assertTrue(composedTest.test("bbb"));
+
+
+
+
+
+
+	}
 }
