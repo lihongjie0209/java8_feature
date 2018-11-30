@@ -5,7 +5,9 @@ import org.junit.Test;
 import org.slf4j.Logger;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 import static org.slf4j.LoggerFactory.getLogger;
 
@@ -162,12 +164,109 @@ public class CompletableFutureTest {
 	@Test
 	public void testCompose() throws Exception {
 
+		// 嵌套 future
+		CompletableFuture<CompletableFuture<Integer>> future = CompletableFuture.supplyAsync(() -> 1)
+				.thenApply(CompletableFuture::completedFuture);
+
+		// 扁平的 future
+		CompletableFuture<Integer> future1 = CompletableFuture.supplyAsync(() -> 1)
+				.thenCompose(CompletableFuture::completedFuture);
+
+
+	}
+
+
+	@Test
+	public void testAsyncWithThreadPool() throws Exception {
+
+
+		ExecutorService pool = Executors.newCachedThreadPool();
+
+
+		Future<Integer> async1 = pool.submit(() -> 1);
+		Future<Integer> async2 = pool.submit(() -> 2);
+		Integer integer1 = async1.get(); // 阻塞调用
+		Integer integer2 = async2.get(); // 阻塞调用
+		pool.shutdownNow();
+
+	}
+
+
+	// todo 添加使用callback的代码示例
+	@Test
+	public void testAsyncWithCallback() throws Exception {
+
+
+
+	}
+
+
+	@Test
+	public void testConstructFutureWithFixedValue() throws Exception {
+
+		// 把数据放到数据Channel
+		CompletableFuture<Integer> future = CompletableFuture.completedFuture(1);
+
+		Assert.assertTrue(future.get() ==1);
+	}
+
+
+	@Test
+	public void testConstructFutureWithThreadPool() throws Exception {
+
+
+		CompletableFuture.supplyAsync(() -> 1, Executors.newCachedThreadPool());
+
+
+	}
+
+
+	/**
+	 * 可以把thenApply 认为是非阻塞的Map
+	 *
+	 * @throws Exception
+	 */
+	@Test
+	public void testFutureWithAsyncMap() throws Exception {
+
+
+		CompletableFuture.supplyAsync(() -> 1)
+				.thenApply(i -> i + 1) // 非阻塞, 直到上一步完成
+				.thenApply(i -> i * 2)
+				.thenApply(String::valueOf)
+				.get();
 
 
 
 
 
 
+	}
+
+
+	@Test
+	public void testAllOf() throws Exception {
+
+
+		CompletableFuture<Integer> future = CompletableFuture.completedFuture(1);
+		CompletableFuture<Integer> future2 = CompletableFuture.completedFuture(2);
+
+
+		CompletableFuture<Void> allOf = CompletableFuture.allOf(future, future2);
+
+
+
+	}
+
+	@Test
+	public void testAnyOf() throws Exception {
+
+
+		CompletableFuture<Integer> future = CompletableFuture.completedFuture(1);
+		CompletableFuture<Integer> future2 = CompletableFuture.completedFuture(2);
+
+
+		CompletableFuture<Object> anyOf = CompletableFuture.anyOf(future, future2);
 
 
 	}
